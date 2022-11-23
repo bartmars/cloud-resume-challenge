@@ -22,21 +22,6 @@ var vnetSpoke2Config = {
   addressSpacePrefix: '10.2.0.0/16'
 }
 
-var snetHubConfig = [
-  {
-    name: 'gateway'
-    subnetPrefix: '10.0.0.0/24'
-  }
-  {
-    name: 'AzureBastionSubnet'
-    subnetPrefix: '10.0.1.0/24'
-  }
-  {
-    name: 'AzureFirewallSubnet'
-    subnetPrefix: '10.0.2.0/24'
-  }
-]
-
 var snetSpoke1Config = [
   {
     name: 'gateway'
@@ -63,14 +48,10 @@ resource vnetHub 'Microsoft.Network/virtualNetworks@2022-05-01' = {
   }
 }
 
-@batchSize(1)
-resource snetHub 'Microsoft.Network/virtualNetworks/subnets@2022-05-01' = [for (snet, index) in snetHubConfig: {
-  name: snet.name
-  parent: vnetHub
-  properties: {
-    addressPrefix: snet.subnetPrefix
-  }
-}]
+module snetHub 'virtualnetworks.hub.bicep' = {
+  name: 'DeployHubSubnets'
+  scope: resourceGroup()
+}
 
 resource vnetSpoke1 'Microsoft.Network/virtualNetworks@2022-05-01' = {
   name: vnetSpoke1Name
@@ -82,6 +63,11 @@ resource vnetSpoke1 'Microsoft.Network/virtualNetworks@2022-05-01' = {
       ]
     }
   }
+}
+
+module snetSpoke1 'virtualnetworks.hub.bicep' = {
+  name: 'DeploySpoke1Subnets'
+  scope: resourceGroup()
 }
 
 @batchSize(1)

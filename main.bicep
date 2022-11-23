@@ -8,8 +8,8 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: rgLocation
 }
 
-module vnetHub 'bicep/virtualnetwork.bicep' = {
-  name: 'DeployHubVNet'
+module vnet 'bicep/virtualnetwork.bicep' = {
+  name: 'DeployVirtualNetworks'
   scope: rg
 }
 

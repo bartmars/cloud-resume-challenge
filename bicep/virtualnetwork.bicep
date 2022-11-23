@@ -65,19 +65,19 @@ resource vnetSpoke1 'Microsoft.Network/virtualNetworks@2022-05-01' = {
   }
 }
 
-module snetSpoke1 'virtualnetworks.hub.bicep' = {
+module snetSpoke1 'virtualnetworks.spoke1.bicep' = {
   name: 'DeploySpoke1Subnets'
   scope: resourceGroup()
 }
 
-@batchSize(1)
-resource snetSpoke1 'Microsoft.Network/virtualNetworks/subnets@2022-05-01' = [for (snet, index) in snetSpoke1Config: {
-  name: snet.name
-  parent: vnetSpoke1
-  properties: {
-    addressPrefix: snet.subnetPrefix
-  }
-}]
+// @batchSize(1)
+// resource snetSpoke1 'Microsoft.Network/virtualNetworks/subnets@2022-05-01' = [for (snet, index) in snetSpoke1Config: {
+//   name: snet.name
+//   parent: vnetSpoke1
+//   properties: {
+//     addressPrefix: snet.subnetPrefix
+//   }
+// }]
 
 resource vnetSpoke2 'Microsoft.Network/virtualNetworks@2022-05-01' = {
   name: vnetSpoke2Name

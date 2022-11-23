@@ -22,20 +22,6 @@ var vnetSpoke2Config = {
   addressSpacePrefix: '10.2.0.0/16'
 }
 
-// var snetSpoke1Config = [
-//   {
-//     name: 'gateway'
-//     subnetPrefix: '10.1.0.0/24'
-//   }
-// ]
-
-var snetSpoke2Config = [
-  {
-    name: 'gateway'
-    subnetPrefix: '10.2.0.0/24'
-  }
-]
-
 resource vnetHub 'Microsoft.Network/virtualNetworks@2022-05-01' = {
   name: vnetHubName
   location: location
@@ -70,15 +56,6 @@ module snetSpoke1 'virtualnetworks.spoke1.bicep' = {
   scope: resourceGroup()
 }
 
-// @batchSize(1)
-// resource snetSpoke1 'Microsoft.Network/virtualNetworks/subnets@2022-05-01' = [for (snet, index) in snetSpoke1Config: {
-//   name: snet.name
-//   parent: vnetSpoke1
-//   properties: {
-//     addressPrefix: snet.subnetPrefix
-//   }
-// }]
-
 resource vnetSpoke2 'Microsoft.Network/virtualNetworks@2022-05-01' = {
   name: vnetSpoke2Name
   location: location
@@ -91,11 +68,12 @@ resource vnetSpoke2 'Microsoft.Network/virtualNetworks@2022-05-01' = {
   }
 }
 
-@batchSize(1)
-resource snetSpoke2 'Microsoft.Network/virtualNetworks/subnets@2022-05-01' = [for (snet, index) in snetSpoke2Config: {
-  name: snet.name
-  parent: vnetSpoke2
-  properties: {
-    addressPrefix: snet.subnetPrefix
-  }
-}]
+module snetSpoke2 'virtualnetworks.spoke2.bicep' = {
+  name: 'DeploySpoke2Subnets'
+  scope: resourceGroup()
+}
+
+module vnetPeeringHubToSpokes 'virtualnetworks.peerings.hub.bicep' = {
+  name: 'DeployVnetHubPeerings'
+  scope: resourceGroup()
+}

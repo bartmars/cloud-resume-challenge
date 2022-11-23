@@ -4,19 +4,7 @@ param vnetSpoke1Name string = 'vnet-spoke1'
 var snetSpoke1Config = [
   {
     name: 'gateway'
-    subnetPrefix: '10.0.0.0/24'
-  }
-  {
-    name: 'AzureBastionSubnet'
-    subnetPrefix: '10.0.1.0/24'
-  }
-  {
-    name: 'AzureFirewallSubnet'
-    subnetPrefix: '10.0.2.0/24'
-  }
-  {
-    name: 'subnet10'
-    subnetPrefix: '10.0.10.0/24'
+    subnetPrefix: '10.1.0.0/24'
   }
 ]
 

@@ -22,12 +22,12 @@ var vnetSpoke2Config = {
   addressSpacePrefix: '10.2.0.0/16'
 }
 
-var snetSpoke1Config = [
-  {
-    name: 'gateway'
-    subnetPrefix: '10.1.0.0/24'
-  }
-]
+// var snetSpoke1Config = [
+//   {
+//     name: 'gateway'
+//     subnetPrefix: '10.1.0.0/24'
+//   }
+// ]
 
 var snetSpoke2Config = [
   {

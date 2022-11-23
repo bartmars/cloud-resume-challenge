@@ -13,3 +13,4 @@ module vnet 'bicep/virtualnetwork.bicep' = {
   scope: rg
 }
 
+

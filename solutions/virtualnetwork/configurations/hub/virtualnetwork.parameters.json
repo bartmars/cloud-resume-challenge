@@ -2,6 +2,29 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    
+    "customerName": {
+      "value": "tak"
+    },
+    "environment": {
+      "value": "dev"
+    },
+    "locationAbbreviation": {
+      "value": "weu"
+    },
+    "location": {
+      "value": "westeurope"
+    },
+    "addressPrefix": {
+      "value": "10.0.0.0/16"
+    },
+    "usage": {
+      "value": "hub"
+    },
+    "costcenter": {
+      "value": "c221123001"
+    },
+    "department": {
+      "value": "IT"
+    }
   }
 }

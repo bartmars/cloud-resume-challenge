@@ -1,3 +1,4 @@
+// Parameters
 @description('Enter customer name abbreviation (3 letters)')
 @maxLength(3)
 param customerName string
@@ -10,14 +11,7 @@ param customerName string
   'prd' // production
 ])
 @maxLength(3)
-param environment string
-
-@allowed([
-  'weu' // west europe
-  'neu' // north europe
-])
-@maxLength(3)
-param locationAbbreviation string
+param tagEnvironment string
 
 @description('Enter the location for resources')
 @allowed([
@@ -27,70 +21,52 @@ param locationAbbreviation string
 param location string
 
 @description('Enter the address prefix (ie. 10.0.0.0/24)')
-param addressPrefix string
+param vnetAddressPrefix string
 
 @description('Enter vnet usage: hub or spoke')
-param usage string
+param vnetUsage string
+
+@description('Enter instance number')
+param vnetInstance int
 
 @description('Add tag for datetime of creation: default(utcNow())')
 param createdOn string = utcNow()
 
 @description('Enter costcenter for billing')
-param costcenter string
+param tagCostcenter string
 
 @description('Enter department code')
-param department string
+param tagDepartment string
 
-param vnetSettings object = {
-  name: format('vnet{0}{1}{2}{3}', customerName, environment, locationAbbreviation, usage)
-  location: location
-  addressPrefixes: [
-    {
-      name: format('vnet{0}{1}{2}{3}', customerName, environment, locationAbbreviation, usage)
-      addressPrefix: addressPrefix
-    }
-  ]
-  subnets: [
-    {
-      name: 'subnet0'
-      addressPrefix: '10.0.0.0/24'
-    }
-    {
-      name: 'subnet1'
-      addressPrefix: '10.0.1.0/24'
-    }
-  ]
-}
+@description('Enter the subnets that needs to be created in parameter file')
+param subnets array
 
+// Variables
+@description('Get customername and only use first 3 characters')
+var customerPrefix = substring(customerName, 0, 3)
+
+// Resources
 resource vnet 'Microsoft.Network/virtualNetworks@2020-06-01' = {
-  name: vnetSettings.name
-  location: vnetSettings.location
+  name: format('vnet{0}{1}{2}{3}', customerPrefix, tagEnvironment, vnetUsage, vnetInstance )
+  location: location
   tags: {
-    environment: environment
+    environment: tagEnvironment
     createdOn: createdOn
-    costcenter: costcenter
-    department: department    
+    costcenter: tagCostcenter
+    department: tagDepartment    
   }
   properties: {
     addressSpace: {
       addressPrefixes: [
-        vnetSettings.addressPrefixes[0].addressPrefix
+        vnetAddressPrefix
       ]
     }
-    subnets: [
-      {
-        name: vnetSettings.subnets[0].name
+    subnets: [for subnet in subnets: {
+        name: subnet.name
         properties: {
-          addressPrefix: vnetSettings.subnets[0].addressPrefix
+          addressPrefix: subnet.addressPrefix
         }
-      }
-      {
-        name: vnetSettings.subnets[1].name
-        properties: {
-          addressPrefix: vnetSettings.subnets[1].addressPrefix
-        }
-      }
-    ]
+    }]
   }
 }
 

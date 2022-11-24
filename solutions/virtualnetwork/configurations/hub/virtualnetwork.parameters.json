@@ -5,26 +5,42 @@
     "customerName": {
       "value": "tak"
     },
-    "environment": {
+    "tagEnvironment": {
       "value": "dev"
-    },
-    "locationAbbreviation": {
-      "value": "weu"
     },
     "location": {
       "value": "westeurope"
     },
-    "addressPrefix": {
+    "vnetAddressPrefix": {
       "value": "10.0.0.0/16"
     },
-    "usage": {
+    "vnetUsage": {
       "value": "hub"
     },
-    "costcenter": {
+    "vnetInstance": {
+      "value": 1
+    },
+    "tagCostcenter": {
       "value": "c221123001"
     },
-    "department": {
-      "value": "IT"
+    "tagDepartment": {
+      "value": "IT Operations"
+    },
+    "subnets": {
+      "value": [
+        {
+          "name": "subnet0",
+          "addressPrefix": "10.0.0.0/24"
+        },
+        {
+          "name": "subnet1",
+          "addressPrefix": "10.0.1.0/24"
+        },
+        {
+          "name": "subnet2",
+          "addressPrefix": "10.0.2.0/24"
+        }
+      ]
     }
   }
 }
